@@ -1,13 +1,10 @@
 <?php
 /**
- * Created by JetBrains PhpStorm.
- * Date: 7/30/13
- * Time: 10:20 AM
- * Plugin Name: Wordpress Slim framework
- * Description: Slim framework integration with Wordpress
+ * Plugin Name: Appointment API
+ * Description: API for adding appointments for a form
  * Version: 1.0
- * Author: Constantin Botnari
- * License: GPLv2
+ * Author: Rich Hildred
+ * License: MIT
  */
 require_once 'Slim/Slim.php';
 require_once 'SlimWpOptions.php';
@@ -29,6 +26,12 @@ add_action('init', function () {
         do_action('slim_mapping',$slim);
         $slim->get("/slim/api/hello", function(){
             echo "hello world";
+        });
+        $slim->post("/slim/api/appointment", function(){
+            header("Location: /?page_id=6");
+            exit;
+            //echo "add appointment<br />";
+            //echo json_encode($_POST);
         });
         $slim->run();
         exit;
