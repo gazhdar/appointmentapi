@@ -28,7 +28,7 @@ add_action('init', function () {
             echo "hello world";
         });
         $slim->post("/slim/api/appointment", function(){
-            header("Location: /?page_id=6");
+            wp_safe_redirect("/?page_id=6");
             exit;
             //echo "add appointment<br />";
             //echo json_encode($_POST);
