@@ -28,10 +28,17 @@ add_action('init', function () {
             echo "hello world";
         });
         $slim->post("/slim/api/appointment", function(){
-            wp_safe_redirect("/?page_id=6");
-            exit;
             //echo "add appointment<br />";
             //echo json_encode($_POST);
+            //echo "<br />";
+            global $wpdb;
+            //$wpdb->show_errors();
+            $stmt = $wpdb->prepare("INSERT INTO wp_appointments(name, appointment_date, phone) VALUES(%s, %s, %s)",
+            $_POST['name'], $_POST['appointment_date'], $_POST['phone']);
+            //echo json_encode($stmt);
+            $wpdb->query($stmt);
+            wp_safe_redirect("/?page_id=6");
+            exit;
         });
         $slim->run();
         exit;
