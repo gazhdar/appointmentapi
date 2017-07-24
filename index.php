@@ -40,6 +40,20 @@ add_action('init', function () {
             wp_safe_redirect("/?page_id=6");
             exit;
         });
+        $slim->post("/slim/api/appointmentservice", function(){
+            $postdata = file_get_contents("php://input");
+            echo $postdata;
+            $oAppointment = json_decode($postdata);
+            global $wpdb;
+            //$wpdb->show_errors();
+            $stmt = $wpdb->prepare("INSERT INTO wp_appointments(name, appointment_date, phone) VALUES(%s, %s, %s)",
+            $oAppointment->name, 
+            $oAppointment->appointment_date,
+            $oAppointment->phone);
+            //echo json_encode($stmt);
+            $wpdb->query($stmt);
+
+        });
         $slim->run();
         exit;
     }
