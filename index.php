@@ -42,7 +42,6 @@ add_action('init', function () {
         });
         $slim->post("/slim/api/appointmentservice", function(){
             $postdata = file_get_contents("php://input");
-            echo $postdata;
             $oAppointment = json_decode($postdata);
             global $wpdb;
             //$wpdb->show_errors();
@@ -52,6 +51,17 @@ add_action('init', function () {
             $oAppointment->phone);
             //echo json_encode($stmt);
             $wpdb->query($stmt);
+            $oAppointment->id = $wpdb->insert_id;
+            echo json_encode($oAppointment);
+
+            // now we insert services
+            foreach ($oAppointment->services as $oService){
+                $stmt = $wpdb->prepare("INSERT INTO wp_appointment_services(service_name, " .
+                "wp_appointments_id_fk) VALUES(%s, %s)",
+                $oService->service_name, $oAppointment->id);
+                $wpdb->query($stmt);
+                
+            }
 
         });
         $slim->run();
